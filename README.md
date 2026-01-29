@@ -1,12 +1,12 @@
-# decoder-only-ssae 🔧
+# Decoder-only Supervised Sparse Auto-Encoders (SSAEs) 🔧
 
-A research repo for learning decoder-only models that reconstruct text embeddings (Stable Diffusion 3.5 text encodings based on T5) from sparse feature inputs. The library contains components to generate prompts, extract embeddings (from SD3), build HDF5-based datasets, train decoder models, and perform inference to reconstruct embeddings usable for conditional image generation.
+A research repo for learning decoder-only SSAEs that reconstruct text embeddings (Stable Diffusion 3.5 text encodings based on T5) from concept dictionry. The library contains components to generate prompts, extract embeddings (from SD3), build HDF5-based datasets, train decoder and sparse latent features, and perform inference to reconstruct embeddings usable for conditional image generation.
 
 ---
 
 ## ✅ Quick summary
 
-- Core functionality: dataset generation -> embedding extraction -> training decoder models -> inference to produce embeddings for image synthesis.
+- Core functionality: dataset generation -> embedding extraction -> training decoder + sparse features -> produce new embeddings -> inference for image synthesis.
 - Main entry points:
   - `dataset_generation/functions.py` — generate combinatorial prompts from category/property lists
   - `get_embeddings_large_turbo_many_h5.py` — extracts text embeddings using SD3 pipeline and saves HDF5 files

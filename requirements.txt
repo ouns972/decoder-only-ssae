@@ -1,0 +1,31 @@
+# ---- Core deep learning stack ----
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1
+torchvision==0.20.1
+
+# ---- Diffusers + Transformers (SD3-compatible) ----
+transformers==4.43.3
+diffusers==0.31.0
+huggingface-hub==0.23.5
+accelerate==0.30.1
+datasets==2.19.1
+bitsandbytes>=0.45,<0.47
+sentencepiece==0.1.99
+tokenizers==0.19.1
+protobuf>=4.23,<5
+xformers==0.0.28.post3
+
+
+# ---- Core scientific / utility packages ----
+numpy==1.26.4
+scipy==1.14.1
+Pillow==10.4.0
+tqdm==4.66.5
+ftfy==6.3.0
+safetensors==0.4.3
+h5py==3.12.1
+matplotlib==3.9.2
+GitPython==3.1.44
+
+# ---- Developer tools ----
+black==25.1.0

@@ -1,4 +1,4 @@
-This repo was developed by Ouns El Harzli and Hugo Wallner (equal contribution).
+This repo was developed by Ouns El Harzli (@ouns972) and Hugo Wallner (@hugo1717) (equal contribution).
 
 
 # Decoder-only Supervised Sparse Auto-Encoders (SSAEs) 🔧

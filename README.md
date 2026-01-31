@@ -1,3 +1,6 @@
+This repo was developed by Ouns El Harzli and Hugo Wallner (equal contribution).
+
+
 # Decoder-only Supervised Sparse Auto-Encoders (SSAEs) 🔧
 
 A research repo for learning decoder-only SSAEs that reconstruct text embeddings (Stable Diffusion 3.5 text encodings based on T5) from concept dictionry. The library contains components to generate prompts, extract embeddings (from SD3), build HDF5-based datasets, train decoder and sparse latent features, and perform inference to reconstruct embeddings usable for conditional image generation.

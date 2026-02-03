@@ -1,5 +1,9 @@
 This repo is associated with the following publication: 
 
+El Harzli, Ouns, Wallner, Hugo, Nam, Yoonsoo, and Tao, Haixuan Xavier. 2026. Supervised sparse auto-encoders as unconstrained feature models for semantic composition. https://arxiv.org/abs/2602.00924 
+
+Please cite as:
+
 @misc{harzli2026supervisedsparseautoencodersunconstrained,
       title={Supervised sparse auto-encoders as unconstrained feature models for semantic composition}, 
       author={Ouns El Harzli and Hugo Wallner and Yoonsoo Nam and Haixuan Xavier Tao},
@@ -7,7 +11,7 @@ This repo is associated with the following publication:
       eprint={2602.00924},
       archivePrefix={arXiv},
       primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2602.00924}, 
+      url={https://arxiv.org/abs/2602.00924 }, 
 }
 
 

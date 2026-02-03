@@ -1,4 +1,15 @@
-This repo was developed by Ouns El Harzli (@ouns972) and Hugo Wallner (@hugo1717) (equal contribution).
+This repo is associated with the following publication: 
+
+@misc{harzli2026supervisedsparseautoencodersunconstrained,
+      title={Supervised sparse auto-encoders as unconstrained feature models for semantic composition}, 
+      author={Ouns El Harzli and Hugo Wallner and Yoonsoo Nam and Haixuan Xavier Tao},
+      year={2026},
+      eprint={2602.00924},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2602.00924}, 
+}
+
 
 
 # Decoder-only Supervised Sparse Auto-Encoders (SSAEs) 🔧

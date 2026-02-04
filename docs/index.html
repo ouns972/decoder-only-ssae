@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Supervised Sparse Auto-Encoders as Unconstrained Feature Models for Semantic Composition. Decoder-only SSAEs for interpretable, property-based editing of text embeddings and image generation.">
+  <meta name="keywords" content="Sparse Auto-Encoder, SAE, SSAE, Stable Diffusion, T5, Semantic Composition, Feature Editing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decoder-Only SSAEs: Supervised Sparse Auto-Encoders as Unconstrained Feature Models for Semantic Composition</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Decoder-Only SSAEs">
+  <meta property="og:description" content="Supervised Sparse Auto-Encoders as Unconstrained Feature Models for Semantic Composition">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ouns972.github.io/decoder-only-ssae/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Decoder-Only SSAEs">
+  <meta name="twitter:description" content="Supervised Sparse Auto-Encoders as Unconstrained Feature Models for Semantic Composition">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Supervised Sparse Auto-Encoders as Unconstrained Feature Models for Semantic Composition</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">Ouns El Harzli</a>,</span>
+            <span class="author-block">
+              <a href="#">Hugo Wallner</a>,</span>
+            <span class="author-block">
+              <a href="#">Yoonsoo Nam</a>,
+            </span>
+            <span class="author-block">
+              <a href="#">Haixuan Xavier Tao</a>
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2602.00924"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2602.00924"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/ouns972/decoder-only-ssae"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We introduce <strong>decoder-only Supervised Sparse Auto-Encoders (SSAEs)</strong> as
+            unconstrained feature models for semantic composition. Unlike standard autoencoders
+            that learn both an encoder and decoder, our approach trains only a decoder alongside
+            a structured sparse latent feature space. Each feature is explicitly tied to human-defined
+            semantic properties &mdash; such as hair colour, pose, or action &mdash; through a binary mask
+            derived from a compositional category/property structure.
+          </p>
+          <p>
+            By operating on text embeddings from Stable Diffusion 3.5's T5 encoder, the model learns
+            a sparse feature matrix <strong>Y</strong> and a linear decoder <strong>W</strong> that together
+            reconstruct embeddings preserving the semantic content of the original prompt. Because the
+            feature space is interpretable by construction, individual features can be read, edited,
+            or swapped to produce new embeddings &mdash; and consequently new images &mdash; with targeted
+            semantic changes, all without retraining the model.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Method. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method Overview</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            The decoder-only SSAE reconstructs an embedding <strong>x</strong> from a sparse feature vector using:
+          </p>
+          <p class="has-text-centered" style="font-family: 'Castoro', serif; font-size: 1.2rem; padding: 16px 0;">
+            x&#770;<sub>i</sub> = W &middot; &sigma;(M<sub>i</sub> &odot; Y<sub>i</sub>) + b
+          </p>
+          <p>
+            where <strong>Y</strong> is the learned sparse feature matrix (one row per prompt),
+            <strong>M</strong> is a binary mask derived from the category/property structure,
+            <strong>&sigma;</strong> is a nonlinear activation (ReLU or LeakyReLU), and
+            <strong>W</strong>, <strong>b</strong> are the linear decoder weights and bias.
+          </p>
+        </div>
+
+        <div class="content has-text-centered">
+          <div style="background: #f5f5f5; border-radius: 10px; padding: 48px 24px; color: #888;">
+            Pipeline figure coming soon
+          </div>
+        </div>
+
+        <h3 class="title is-4">Model Variants</h3>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Trainable Inputs.</strong> Learns Y as a full parameter matrix with shared features across prompts
+            via a dedicated <em>y_same</em> vector. The most flexible variant, suited for direct feature manipulation.
+          </p>
+          <p>
+            <strong>Average Feature.</strong> Uses an embedding layer to represent per-property features
+            that are composed via the mask. More parameter-efficient for large prompt sets.
+          </p>
+          <p>
+            <strong>Inverse Least-Squares.</strong> Learns only Y; the decoder weight W is computed analytically
+            via regularised least-squares (W = (X<sup>T</sup>X + &lambda;I)<sup>-1</sup>X<sup>T</sup>Y).
+            No gradient descent on W.
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Method. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Property-Based Editing. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Property-Based Editing</h2>
+        <div class="content has-text-justified">
+          <p>
+            Prompts are composed from a structured set of <strong>categories</strong>, each containing
+            discrete <strong>properties</strong>. The category/property structure defines the binary mask
+            that governs which features in Y are active for each prompt. By manipulating individual
+            features or swapping property activations, new embeddings can be generated that correspond
+            to targeted semantic edits.
+          </p>
+        </div>
+
+        <div class="columns is-multiline" style="margin-top: 1rem;">
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>Hair</strong></p>
+              <p class="is-size-6">A blond girl</p>
+              <p class="is-size-6">A brunette girl</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>Eyes</strong></p>
+              <p class="is-size-6">Blue eyes</p>
+              <p class="is-size-6">Brown eyes</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>T-Shirt</strong></p>
+              <p class="is-size-6">Blue t-shirt</p>
+              <p class="is-size-6">Black t-shirt</p>
+              <p class="is-size-6">Red t-shirt</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>Situation</strong></p>
+              <p class="is-size-6">Walking down the street</p>
+              <p class="is-size-6">Sitting at a cafe</p>
+              <p class="is-size-6">On horseback in the forest</p>
+              <p class="is-size-6">&hellip; and more</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>Action</strong></p>
+              <p class="is-size-6">Holding a coffee</p>
+              <p class="is-size-6">Holding a coca-cola</p>
+              <p class="is-size-6">Holding a gun</p>
+              <p class="is-size-6">Smoking a cigarette</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="box">
+              <p class="heading has-text-info"><strong>Pose</strong></p>
+              <p class="is-size-6">Looking to the left</p>
+              <p class="is-size-6">Looking to the right</p>
+              <p class="is-size-6">Looking in front</p>
+              <p class="is-size-6">Looking behind</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Property-Based Editing. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            Below are placeholder slots for result comparisons. Full results will be added upon publication.
+          </p>
+        </div>
+
+        <div class="columns is-multiline">
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <div style="background: #f5f5f5; height: 200px; display: flex; align-items: center; justify-content: center; color: #888;">
+                  Original Image
+                </div>
+              </div>
+              <div class="card-content">
+                <p class="is-size-7"><strong>Original:</strong> Generated from prompt text embedding</p>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <div style="background: #f5f5f5; height: 200px; display: flex; align-items: center; justify-content: center; color: #888;">
+                  Reconstructed Image
+                </div>
+              </div>
+              <div class="card-content">
+                <p class="is-size-7"><strong>Reconstructed:</strong> Generated from SSAE-reconstructed embedding</p>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <div style="background: #f5f5f5; height: 200px; display: flex; align-items: center; justify-content: center; color: #888;">
+                  Edited Image
+                </div>
+              </div>
+              <div class="card-content">
+                <p class="is-size-7"><strong>Edited:</strong> Hair colour swapped via feature manipulation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Results. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{harzli2026supervisedsparseautoencoders,
+    title   = {Supervised Sparse Auto-Encoders as Unconstrained Feature Models
+               for Semantic Composition},
+    author  = {Ouns El Harzli and Hugo Wallner and Yoonsoo Nam
+               and Haixuan Xavier Tao},
+    year    = {2026},
+    eprint  = {2602.00924},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.AI},
+    url     = {https://arxiv.org/abs/2602.00924}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://arxiv.org/pdf/2602.00924">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/ouns972/decoder-only-ssae">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This project is licensed under a <a href="https://github.com/ouns972/decoder-only-ssae/blob/main/LICENSE">MIT License</a>.
+          </p>
+          <p>
+            This website template is borrowed from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
